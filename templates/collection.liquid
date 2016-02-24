@@ -1,0 +1,52 @@
+{% assign products_per_row = 4 %}
+{% assign rows_per_page = 1 %}
+
+{% if products_per_row == 3 %}
+    {% assign products_per_page = 3 | times: rows_per_page %}
+{% else %}
+    {% assign products_per_page = 4 | times: rows_per_page %}
+{% endif %}
+
+<section aria-label="Main content" role="main" class="collection">
+    <div class="head">
+        <div class="_cont">
+            <h1>{{ collection.title }}</h1>
+            {% if collection.description != blank %}
+            <div class="description">
+                {{ collection.description }}
+            </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="products">
+        <div class="_cont">
+            {% if collection.products.size <= 0 %}
+                <div class="no-products">{{ 'collections.general.no_matches' | t }}</div>
+            {% else %}
+                {% assign count_text = collection.products_count %}
+                {% assign item_text = collection.products_count | pluralize: 'item', 'items' %}
+                {% assign count_text = count_text | append: ' ' | append: item_text %}
+
+                {% include 'collections-settings', products_per_row:products_per_row, count_text: count_text, display_sorting: true %}
+
+                <div class="collection-list cols-4" id="collection-list" data-products-per-page="{{ products_per_page }}">
+                  {% assign i = 0 %}
+
+                  {% for product in collection.products %}
+                    {% assign i = i | plus: 1 %}
+                    {% include 'product-grid-item', i:i, products_per_page:products_per_page %}
+                  {% endfor %}
+                </div>
+
+                {% if collection.products.size > products_per_page %}
+                    <div class="more-products" id="more-products-wrap">
+                        <span id="more-products" data-rows_per_page="{{ rows_per_page }}">More products</span>
+                    </div>
+                {% endif %}
+            {% endif %}
+        </div>
+    </div>
+
+    {% include 'quick-cart' %}
+</section>

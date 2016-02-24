@@ -1,0 +1,72 @@
+<section aria-label="Main content" role="main" class="cart">
+<div class="_cont2">
+{% if cart.item_count > 0 %}
+
+    <form action="/cart" method="post" novalidate>
+
+        <h1><span>{{ 'cart.general.title' | t }}</span></h1>
+
+        {% if cart.announcements.size > 0 %}
+          <ul class="note">
+            {% for announcement in cart.announcements %}
+              <li>{{ announcement }}</li>
+            {% endfor %}
+          </ul>
+        {% endif %}
+
+        {% if cart.errors.size > 0 %}
+          <ul class="note errors">
+            {% for error in cart.errors %}
+              <li>{{ error }}</li>
+            {% endfor %}
+          </ul>
+        {% endif %}
+
+        <div class="cart-products">
+        {% for item in cart.items %}
+            <div class="product">
+                <div class="p-ico">
+                    <a href="{{ item.url | within: collections.all }}"><img src="{{ item | img_url: 'medium' }}" alt="{{ item.title | escape }}"></a>
+                </div>
+                <div class="p-text">
+                    <a href="{{ item.url }}">
+                        {{ item.product.title }}
+                        {% unless item.variant.title contains 'Default' %}
+                            <small>({{ item.variant.title }})</small>
+                        {% endunless %}
+                    </a>
+                    <div class="p-count-price">
+                        <div class="p-count">
+                            {% include 'spinner', id:item.id, quantity: item.quantity %}
+                        </div>
+                        <div class="p-price">
+                            {{ item.line_price | money }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+        </div>
+
+        <div class="price-total">
+            {{ 'cart.label.total' | t }}:
+            <strong>{{ cart.total_price | money }}</strong>
+        </div>
+
+        <div class="inputs">
+            <input type="submit" name="checkout" class="checkout" value="Billing info and payment">
+            <input type="submit" name="update" class="update-cart" value="{{ 'cart.general.update' | t }}">
+        </div>
+        <p class="note">{{ 'cart.general.shipping_at_checkout' | t }}</p>
+    </form>
+
+{% else %}
+  {% comment %}
+    The cart is empty
+  {% endcomment %}
+  <h2>{{ 'cart.general.title' | t }}</h2>
+  <p>{{ 'cart.general.empty' | t }}</p>
+  <p>{{ 'cart.general.continue_browsing_html' | t }}</p>
+{% endif %}
+</div>
+</section>

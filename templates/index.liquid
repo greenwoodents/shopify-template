@@ -1,0 +1,68 @@
+<section aria-label="Main content" role="main" class="homepage">
+    <div class="bg" id="homapage-background">
+        <div class="_cont">
+            {% include 'featured-products' %}
+        </div>
+    </div>
+    <div class="main-services">
+        <ol class="_cont2">
+            <li><span class="shipping">Free shiping</span></li>
+            <li><span class="brands">Premium brands</span></li>
+            <li><span class="support">24/7 support</span></li>
+        </ol>
+    </div>
+    {% if settings.homepage_welcome_heading != blank or settings.homepage_welcome_text != blank %}
+    <div class="main-text">
+        <div class="_cont2">
+            {% if settings.homepage_welcome_heading != blank %}
+            <h1>{{ settings.homepage_welcome_heading }}</h1>
+            {% endif %}
+            {% if settings.homepage_welcome_text != blank %}
+            <p>{{ settings.homepage_welcome_text }}</p>
+            {% endif %}
+
+            <div class="links">
+                <a class="about" href="/pages/about-us">Learn more about us</a>
+                {% include 'social-links', class: 'dark' %}
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+    <div class="collection-list homepage-banners cols-2">
+        <div class="_cont">
+            {% assign i = 1 %}
+
+            {% for i in (1..6) %}
+                {% capture banner_url %}homepage_banner_{{ i }}_url{% endcapture %}
+
+                {% if settings[banner_url] != blank %}
+                    {% capture banner_image %}homepage_banner_{{ i }}_image.jpg{% endcapture %}
+                    {% capture banner_title %}homepage_banner_{{ i }}_title{% endcapture %}
+                    {% capture banner_subtitle %}homepage_banner_{{ i }}_subtitle{% endcapture %}
+                    {% capture banner_description %}homepage_banner_{{ i }}_description{% endcapture %}
+                    <a class="product-box" href="{{ settings[banner_url] }}">
+                        <span class="img">
+                            <span class="i" style="background-image: url('{{ banner_image | asset_url }}')"></span>
+                        </span>
+                        {% if settings[banner_title] != blank or settings[banner_subtitle] != blank or settings[banner_description] != blank %}
+                            <span class="text">
+                                {% if settings[banner_title] != blank %}
+                                    <strong>{{ settings[banner_title] }}</strong>
+                                {% endif %}
+                                {% if settings[banner_subtitle] != blank %}
+                                    <span>{{ settings[banner_subtitle] }}</span>
+                                {% endif %}
+                                {% if settings[banner_description] != blank %}
+                                    <div class="descr"><span>{{ settings[banner_description] }}</span></div>
+                                {% endif %}
+                            </span>
+                        {% endif %}
+                    </a>
+                {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+
+    {% include 'quick-cart' %}
+</section>

@@ -1,0 +1,211 @@
+<section aria-label="Main content" role="main" class="product-detail">
+    <div itemscope itemtype="http://schema.org/Product">
+        <meta itemprop="url" content="{{ shop.url }}{{ product.url }}">
+        <meta itemprop="image" content="{{ product.featured_image.src | img_url: 'grande' }}">
+        <div class="shadow">
+            <div class="_cont detail-top">
+                <div class="cols">
+                    <div class="left-col">
+                        <div class="thumbs">
+                            {% if product.images.size > 0 %}
+                                {% assign i = 0 %}
+                                {% for image in product.images %}
+                                    {% if i == 0 %}
+                                        {% assign active = " active" %}
+                                    {% else %}
+                                        {% assign active = "" %}
+                                    {% endif %}
+                                    <a class="thumb-image{{ active }}" href="{{ image.src | img_url: '1024x1024' }}" data-index="{{ i }}">
+                                        <span><img src="{{ image.src | img_url: '150x150' }}" alt="{{ image.alt | escape }}"></span>
+                                    </a>
+                                    {% assign i = i | plus: 1 %}
+                                {% endfor %}
+                            {% endif %}
+                        </div>
+                        <div class="big">
+                            {% if product.images.size > 0 %}
+                                {% assign image = product.images[0] %}
+                                <!--
+                                <img id="big-image" src="{{ image.src | img_url: '1024x1024' }}" alt="{{ image.alt | escape }}">
+                                -->
+                                <span id="big-image" class="img" style="background-image: url('{{ image.src | img_url: '1024x1024' }}')" data-src="{{ image.src | img_url: '1024x1024' }}"></span>
+
+                                <div id="banner-gallery" class="swipe">
+                                    <div class="swipe-wrap">
+                                    {% for image in product.images %}
+                                        <div style="background-image: url('{{ image.src | img_url: 'large' }}')"></div>
+                                    {% endfor %}
+                                    </div>
+                                </div>
+                            {% endif %}
+
+                            {% if settings.social_sharing_products %}
+                                <div class="detail-socials">
+                                    {% include 'social-sharing' %}
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="right-col">
+                        <h1 itemprop="name">{{ product.title }}</h1>
+
+                        <div itemprop="offers" itemscope itemtype="http://schema.org/Offer">
+                            {% assign variant = product.selected_or_first_available_variant %}
+                            <meta itemprop="priceCurrency" content="{{ shop.currency }}">
+                            <link itemprop="availability" href="http://schema.org/{% if product.available %}InStock{% else %}OutOfStock{% endif %}">
+
+                            <div class="price-shipping">
+                                <div class="price" id="price-preview">
+                                    {{ product.price | money }}
+
+                                    {% if product.compare_at_price > product.price %}
+                                      <del>
+                                        {{ product.compare_at_price_max | money }}
+                                      </del>
+                                    {% endif %}
+                                </div>
+                                {% if settings.free_shipping_anchor != '' and settings.free_shipping_link != '' %}
+                                    <a href="{{ settings.free_shipping_link }}">{{ settings.free_shipping_anchor }}</a>
+                                {% endif %}
+                            </div>
+
+                            {% if product.available and product.variants.size > 1 %}
+                                <div class="swatches">
+                                    {% for option in product.options %}
+                                        {% include 'swatch' with option %}
+                                    {% endfor %}
+
+                                    {% if settings.size_guide_anchor != '' and settings.size_guide_link != '' %}
+                                    <div class="guide">
+                                        <a href="{{ settings.size_guide_link }}">{{ settings.size_guide_anchor }}</a>
+                                    </div>
+                                    {% endif %}
+                                </div>
+                            {% endif %}
+
+                            <form action="/cart/add" method="post" enctype="multipart/form-data" id="AddToCartForm">
+                                <select name="id" id="productSelect" class="product-single__variants">
+                                  {% for variant in product.variants %}
+                                    {% if variant.available %}
+
+                                      <option {% if variant == product.selected_or_first_available_variant %} selected="selected" {% endif %} data-sku="{{ variant.sku }}" value="{{ variant.id }}">
+                                        {{ variant.title }} - {{ variant.price | money_with_currency }}
+                                      </option>
+
+                                    {% else %}
+                                      <option disabled="disabled">
+                                        {{ variant.title }} - {{ 'products.product.sold_out' | t }}
+                                      </option>
+                                    {% endif %}
+                                  {% endfor %}
+                                </select>
+
+                                <div class="btn-and-quantity-wrap">
+                                    <div class="btn-and-quantity">
+                                        {% include 'spinner', id:product.id, quantity: 1 %}
+
+                                        <button type="submit" id="AddToCart">
+                                            <span id="AddToCartText">{{ 'products.product.add_to_cart' | t }}</span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+
+                            <div class="tabs">
+                                <div class="tab-labels">
+                                    <span data-id="1" class="active">Info</span>
+                                    <span data-id="2">Brand</span>
+                                </div>
+                                <div class="tab-slides">
+                                    <div id="tab-slide-1" itemprop="description"  class="slide active">
+                                        {{ product.description }}
+                                    </div>
+                                    <div id="tab-slide-2" class="slide">
+                                        {{ product.vendor }}
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="social-sharing-btn-wrapper">
+                                <span id="social_sharing_btn">Share</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% if settings.product_related_enable %}
+            {% include 'related-products' %}
+        {% endif %}
+    </div>
+
+    {% include 'quick-cart' %}
+</section>
+
+{{ 'option_selection.js' | shopify_asset_url | script_tag }}
+<script>
+  var selectCallback = function(variant, selector) {
+    // BEGIN SWATCHES
+    if (variant) {
+      var form = jQuery('#' + selector.domIdPrefix).closest('form');
+      for (var i=0,length=variant.options.length; i<length; i++) {
+        var radioButton = form.find('.swatch[data-option-index="' + i + '"] :radio[value="' + variant.options[i] +'"]');
+        if (radioButton.size()) {
+          radioButton.get(0).checked = true;
+        }
+      }
+
+      if (variant.available) {
+        jQuery('#AddToCart').removeAttr('disabled').removeClass('disabled').val('{{ 'products.product.add_to_cart' | t }}');
+      }
+      else {
+        jQuery('#AddToCart').val('{{ 'products.product.sold_out' | t }}').addClass('disabled').attr('disabled', 'disabled');
+      }
+
+
+      if(variant.price < variant.compare_at_price){
+        jQuery('#price-preview').html(Shopify.formatMoney(variant.price, "{{ shop.money_format }}") + " <del>" + Shopify.formatMoney(variant.compare_at_price, "{{ shop.money_format }}") + "</del>");
+      } else {
+        jQuery('#price-preview').html(Shopify.formatMoney(variant.price, "{{ shop.money_format }}"));
+      }
+    }
+    // END SWATCHES
+
+  };
+
+  jQuery(function($) {
+    new Shopify.OptionSelectors('productSelect', {
+      product: {{ product | json }},
+      onVariantSelected: selectCallback,
+      enableHistoryState: true
+    });
+
+    {% if product.available and product.options.size > 1 %}
+        Shopify.linkOptionSelectors({{ product | json }});
+    {% endif %}
+
+{% comment %}
+  /*
+    // Add label if only one product option and it isn't 'Title'. Could be 'Size'.
+    {% if product.options.size == 1 and product.options.first != 'Title' %}
+      $('.selector-wrapper:eq(0)').prepend('<label for="productSelect-option-0">{{ product.options.first | escape }}</label>');
+    {% endif %}
+
+    // Hide selectors if we only have 1 variant and its title contains 'Default'.
+    {% if product.variants.size == 1 and product.variants.first.title contains 'Default' %}
+      $('.selector-wrapper').hide();
+    {% endif %}
+    // Auto-select first available variant on page load.
+    {% assign found_one_in_stock = false %}
+    {% for variant in product.variants %}
+      {% if variant.available and found_one_in_stock == false %}
+        {% assign found_one_in_stock = true %}
+        {% for option in product.options %}
+        $('.single-option-selector:eq({{ forloop.index0 }})').val({{ variant.options[forloop.index0] | json }}).trigger('change');
+        {% endfor %}
+      {% endif %}
+    {% endfor %}
+  */
+{% endcomment %}
+  });
+</script>

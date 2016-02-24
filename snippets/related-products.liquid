@@ -1,0 +1,97 @@
+{% comment %}
+  <!-- Solution brought to you by Caroline Schnapp -->
+  <!-- See this: https://docs.shopify.com/support/your-store/products/can-i-recommend-related-products#finding-a-relevant-collecitons -->
+  Number of related items per row,
+  and number of rows.
+{% endcomment %}
+
+{% assign number_of_related_products_per_row = 4 %}
+{% assign number_of_rows = 1 %}
+
+{% comment %}
+  Set either or both to true, if you want
+  to limit yourself to items with same vendor, and/or type.
+{% endcomment %}
+
+{% assign same_vendor = false %}
+{% assign same_type = false %}
+
+{% comment %}
+  Collections to ignore.
+  Never pick related items from those.
+{% endcomment %}
+
+{% assign exclusions = 'frontpage,all' | split: ',' %}
+
+{% comment %}
+  Looking for a relevant collection.
+{% endcomment %}
+
+{% if product.metafields.c_f['Related Products'] %}
+  {% assign collection = collections[product.metafields.c_f['Related Products']] %}
+{% endif %}
+
+{% assign found_a_collection = false %}
+{% if collection and collection.all_products_count > 1 %}
+  {% unless exclusions contains collection.handle %}
+    {% assign found_a_collection = true %}
+  {% endunless %}
+{% endif %}
+{% unless found_a_collection %}
+  {% for c in product.collections %}
+    {% unless exclusions contains c.handle or c.all_products_count < 2 %}
+      {% assign found_a_collection = true %}
+      {% assign collection = c %}
+      {% break %}
+    {% endunless %}
+  {% endfor %}
+{% endunless %}
+
+{% comment %}
+  If we have a relevant collection.
+{% endcomment %}
+
+{% if found_a_collection %}
+
+  {% assign current_product = product %}
+  {% assign i = 0 %}
+
+  {% assign rows_per_page = 1 %}
+  {% assign products_per_page = 4 | times: rows_per_page %}
+
+  {% capture related_items %}
+    {% for product in collection.products %}
+      {% unless product.handle == current_product.handle %}
+         {% unless same_vendor and current_product.vendor != product.vendor %}
+           {% unless same_type and current_product.type != product.type %}
+                {% assign i = i | plus: 1 %}
+                {% include 'product-grid-item', i:i, products_per_page:products_per_page %}
+           {% endunless %}
+        {% endunless %}
+      {% endunless %}
+    {% endfor %}
+  {% endcapture %}
+
+  {% assign related_items = related_items | trim %}
+
+  {% unless related_items == blank %}
+
+  <aside class="related">
+    <div class="_cont">
+      <h2>You might also like</h2>
+      <div class="collection-list cols-4" id="collection-list" data-products-per-page="{{ products_per_page }}">
+        {{ related_items }}
+      </div>
+
+      {% if i > products_per_page %}
+        <div class="more-products" id="more-products-wrap">
+            <span id="more-products" data-rows_per_page="{{ rows_per_page }}">More products</span>
+        </div>
+      {% endif %}
+
+    </div>
+  </aside>
+
+  {% endunless %}
+
+{% endif %}

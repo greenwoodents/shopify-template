@@ -1,0 +1,11 @@
+{% if settings.social_links_show != blank %}
+<div class="socials{% if class != blank %} {{ class }} {% endif %}">
+    <strong>follow us:</strong>
+    <ul>
+        {% if settings.social_twitter_link != '' %}<li><a href="{{ settings.social_twitter_link }}" title="{{ shop.name }} on Twitter" class="tw" target="_blank">Twitter</a></li>{% endif %}
+        {% if settings.social_facebook_link != '' %}<li><a href="{{ settings.social_facebook_link }}" title="{{ shop.name }} on Facebook" class="fb" target="_blank">Facebook</a></li>{% endif %}
+        {% if settings.social_instagram_link != '' %}<li><a href="{{ settings.social_instagram_link }}" title="{{ shop.name }} on Instagram" class="in" target="_blank">Instagram</a></li>{% endif %}
+        {% if settings.social_pinterest_link != '' %}<li><a href="{{ settings.social_pinterest_link }}" title="{{ shop.name }} on Pinterest" class="pi" target="_blank">Pinterest</a></li>{% endif %}
+    </ul>
+</div>
+{% endif %}

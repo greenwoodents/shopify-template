@@ -1,0 +1,327 @@
+[
+  {
+    "name": "Home Page",
+    "settings": [
+      {
+           "type": "header",
+           "content": "Background image"
+      },
+      {
+        "type": "image",
+        "id": "homepage_image_1920.jpg",
+        "label": "Image banner - wide desktop (1920px)"
+      },
+      {
+        "type": "image",
+        "id": "homepage_image_1600.jpg",
+        "label": "Image banner - desktop (1600px)"
+      },
+      {
+        "type": "image",
+        "id": "homepage_image_600.jpg",
+        "label": "Image banner - tablet (600px)"
+      },
+      {
+        "type": "image",
+        "id": "homepage_image_320.jpg",
+        "label": "Image banner - mobile (320px)"
+      },
+      {
+           "type": "header",
+           "content": "Welcome text"
+      },
+      {
+        "type": "text",
+        "id": "homepage_welcome_heading",
+        "label": "Heading"
+      },
+      {
+        "type": "textarea",
+        "id": "homepage_welcome_text",
+        "label": "Text"
+      },
+      {
+           "type": "header",
+           "content": "Banner 1"
+      },
+      {
+        "type": "text",
+        "id": "homepage_banner_1_url",
+        "label": "Target URL"
+      },
+      {
+        "type": "text",
+        "id": "homepage_banner_1_title",
+        "label": "Title"
+      },
+      {
+        "type": "text",
+        "id": "homepage_banner_1_subtitle",
+        "label": "Subtitle"
+      },
+      {
+        "type": "textarea",
+        "id": "homepage_banner_1_description",
+        "label": "Description"
+      },
+      {
+        "type": "image",
+        "id": "homepage_banner_1_image.jpg",
+        "label": "Image"
+      },
+      {
+           "type": "header",
+           "content": "Banner 2"
+      },
+      {
+        "type": "text",
+        "id": "homepage_banner_2_url",
+        "label": "Target URL"
+      },
+      {
+        "type": "text",
+        "id": "homepage_banner_2_title",
+        "label": "Title"
+      },
+      {
+        "type": "text",
+        "id": "homepage_banner_2_subtitle",
+        "label": "Subtitle"
+      },
+      {
+        "type": "textarea",
+        "id": "homepage_banner_2_description",
+        "label": "Description"
+      },
+      {
+        "type": "image",
+        "id": "homepage_banner_2_image.jpg",
+        "label": "Image"
+      },
+      {
+           "type": "header",
+           "content": "Banner 3"
+      },
+      {
+        "type": "text",
+        "id": "homepage_banner_3_url",
+        "label": "Target URL"
+      },
+      {
+        "type": "text",
+        "id": "homepage_banner_3_title",
+        "label": "Title"
+      },
+      {
+        "type": "text",
+        "id": "homepage_banner_3_subtitle",
+        "label": "Subtitle"
+      },
+      {
+        "type": "textarea",
+        "id": "homepage_banner_3_description",
+        "label": "Description"
+      },
+      {
+        "type": "image",
+        "id": "homepage_banner_3_image.jpg",
+        "label": "Image"
+      },
+      {
+           "type": "header",
+           "content": "Banner 4"
+      },
+      {
+        "type": "text",
+        "id": "homepage_banner_4_url",
+        "label": "Target URL"
+      },
+      {
+        "type": "text",
+        "id": "homepage_banner_4_title",
+        "label": "Title"
+      },
+      {
+        "type": "text",
+        "id": "homepage_banner_4_subtitle",
+        "label": "Subtitle"
+      },
+      {
+        "type": "textarea",
+        "id": "homepage_banner_4_description",
+        "label": "Description"
+      },
+      {
+        "type": "image",
+        "id": "homepage_banner_4_image.jpg",
+        "label": "Image"
+      },
+      {
+           "type": "header",
+           "content": "Banner 5"
+      },
+      {
+        "type": "text",
+        "id": "homepage_banner_5_url",
+        "label": "Target URL"
+      },
+      {
+        "type": "text",
+        "id": "homepage_banner_5_title",
+        "label": "Title"
+      },
+      {
+        "type": "text",
+        "id": "homepage_banner_5_subtitle",
+        "label": "Subtitle"
+      },
+      {
+        "type": "textarea",
+        "id": "homepage_banner_5_description",
+        "label": "Description"
+      },
+      {
+        "type": "image",
+        "id": "homepage_banner_5_image.jpg",
+        "label": "Image"
+      },
+      {
+           "type": "header",
+           "content": "Banner 6"
+      },
+      {
+        "type": "text",
+        "id": "homepage_banner_6_url",
+        "label": "Target URL"
+      },
+      {
+        "type": "text",
+        "id": "homepage_banner_6_title",
+        "label": "Title"
+      },
+      {
+        "type": "text",
+        "id": "homepage_banner_6_subtitle",
+        "label": "Subtitle"
+      },
+      {
+        "type": "textarea",
+        "id": "homepage_banner_6_description",
+        "label": "Description"
+      },
+      {
+        "type": "image",
+        "id": "homepage_banner_6_image.jpg",
+        "label": "Image"
+      }
+    ]
+  },
+  {
+    "name": "Social links",
+    "settings": [
+      {
+        "type": "checkbox",
+        "id": "social_links_show",
+        "label": "Enable social links",
+        "default": true
+      },
+      {
+        "type": "text",
+        "id": "social_twitter_link",
+        "label": "Twitter URL"
+      },
+      {
+        "type": "text",
+        "id": "social_facebook_link",
+        "label": "Facebook URL"
+      },
+      {
+        "type": "text",
+        "id": "social_pinterest_link",
+        "label": "Pinterest URL"
+      },
+      {
+        "type": "text",
+        "id": "social_instagram_link",
+        "label": "Instagram URL"
+      }
+    ]
+  },
+  {
+    "name": "Products",
+    "settings": [
+      {
+           "type": "header",
+           "content": "Products list"
+      },
+      {
+        "type": "checkbox",
+        "id": "collections_sort_enable",
+        "label": "Enable sorting",
+        "default": true
+      },
+      {
+           "type": "header",
+           "content": "Product detail"
+      },
+      {
+        "type": "checkbox",
+        "id": "product_related_enable",
+        "label": "Enable related products",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "social_sharing_products",
+        "label": "Enable social sharing buttons",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "share_facebook",
+        "label": "Enable social sharing button for Facebook",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "share_twitter",
+        "label": "Enable social sharing button for Twitter",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "share_pinterest",
+        "label": "Enable social sharing button for Pinterest",
+        "default": true
+      },
+      {
+           "type": "header",
+           "content": "Free shipping link"
+      },
+      {
+        "type": "text",
+        "id": "free_shipping_anchor",
+        "label": "Text of the link"
+      },
+      {
+        "type": "text",
+        "id": "free_shipping_link",
+        "label": "URL of the 'free shipping' page"
+      },
+      {
+           "type": "header",
+           "content": "Size guide link"
+      },
+      {
+        "type": "text",
+        "id": "size_guide_anchor",
+        "label": "Text of the link"
+      },
+      {
+        "type": "text",
+        "id": "size_guide_link",
+        "label": "URL of the 'size guide' page"
+      }
+    ]
+  }
+]

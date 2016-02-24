@@ -1,0 +1,55 @@
+{% assign products_per_row = 4 %}
+{% assign rows_per_page = 4 %}
+
+{% if products_per_row == 3 %}
+    {% assign products_per_page = 3 | times: rows_per_page %}
+{% else %}
+    {% assign products_per_page = 4 | times: rows_per_page %}
+{% endif %}
+
+<section aria-label="Main content" role="main" class="collection search">
+    <div class="products">
+        <div class="_cont">
+{% comment %}
+  Check to enforce respond.js
+{% endcomment %}
+{% assign respond_js_secret_key = shop.domain | md5 %}
+{% unless search.terms == respond_js_secret_key %}
+
+  {% if search.performed %}
+      {% if search.results_count > 0 %}
+          {% assign result_text = search.results_count | pluralize: 'result', 'results' %}
+          {% assign count_text = 'Search ' | append: result_text | append: ' (' | append: search.results_count | append: ') for ' %}
+          {% assign q = search.terms | trim %}
+          {% assign count_text = count_text | append: q %}
+
+          {% include 'collections-settings', products_per_row:products_per_row, count_text: count_text, display_sorting: false %}
+
+          <div class="collection-list cols-4" id="collection-list" data-products-per-page="{{ products_per_page }}">
+              {% assign i = 0 %}
+
+              {% for product in search.results %}
+                {% assign i = i | plus: 1 %}
+                {% include 'product-grid-item', i:i, products_per_page:products_per_page %}
+              {% endfor %}
+          </div>
+          {% if search.results_count > products_per_page %}
+            <div class="more-products" id="more-products-wrap">
+                <span id="more-products" data-rows_per_page="{{ rows_per_page }}">More products</span>
+            </div>
+          {% endif %}
+      {% endif %}
+
+  {% else %}
+    <p>Please use the search field in the header.</p>
+  {% endif %}
+
+{% else %}
+  {% include 'respond' %}
+  {% layout none %}
+{% endunless %}
+        </div>
+    </div>
+
+    {% include 'quick-cart' %}
+</section>

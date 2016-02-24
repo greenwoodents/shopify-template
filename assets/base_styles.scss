@@ -1,0 +1,201 @@
+// vychozi velikost pisma
+$default_size: 13;
+
+// definice barev
+$white_color: #fff;
+$black_color: #16161a;
+$black2_color: #0d0d1a;
+
+$gray_color: #f7f7fa;
+$gray2_color: #b5b6bd;
+$gray3_color: #d2d4d6;
+$gray4_color: #edeff2;
+$gray5_color: #46464a;
+$gray6_color: #2e2e38;
+$gray7_color: #5d5e66;
+$gray8_color: #d8d7d7;
+$gray9_color: #e2e2e3;
+$gray10_color: #404052;
+
+$blue_color: #086fcf;
+$blue2_color: #0084ff;
+$green_color: #109146;
+$red_color: #d9332e;
+$yellow_color: #f5c81f;
+
+// definice breakpointu
+$breakpoint_1600: 1600px;
+$breakpoint_1200: 1200px;
+$breakpoint_1170: 1170px;
+$breakpoint_850:  850px;
+$breakpoint_760:  760px;
+$breakpoint_600:  600px;
+$breakpoint_450:  450px;
+$breakpoint_320:  320px;
+
+// definice fontu
+@mixin font_montserratlight {
+    font-family: "montserratlight",sans-serif;
+}
+@mixin font_montserratregular {
+    font-family: "montserratregular",sans-serif;
+}
+@mixin font_montserratbold {
+    font-family: "montserratbold",sans-serif;
+}
+@mixin font_robotolight {
+    font-family: "robotolight",sans-serif;
+}
+@mixin font_robotoregular {
+    font-family: "robotoregular",sans-serif;
+}
+@mixin font_robotobold {
+    font-family: "robotobold",sans-serif;
+}
+@mixin font_robotoblack {
+    font-family: "robotoblack",sans-serif;
+}
+
+@font-face {
+    font-family: 'montserratlight';
+    src: url('montserrat-light-webfont.eot');
+    src: url('montserrat-light-webfont.eot?#iefix') format('embedded-opentype'),
+         url('montserrat-light-webfont.woff') format('woff'),
+         url('montserrat-light-webfont.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'montserratregular';
+    src: url('montserrat-regular-webfont.eot');
+    src: url('montserrat-regular-webfont.eot?#iefix') format('embedded-opentype'),
+         url('montserrat-regular-webfont.woff') format('woff'),
+         url('montserrat-regular-webfont.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'montserratbold';
+    src: url('montserrat-bold-webfont.eot');
+    src: url('montserrat-bold-webfont.eot?#iefix') format('embedded-opentype'),
+         url('montserrat-bold-webfont.woff') format('woff'),
+         url('montserrat-bold-webfont.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'robotolight';
+    src: url('roboto-light-webfont.eot');
+    src: url('roboto-light-webfont.eot?#iefix') format('embedded-opentype'),
+         url('roboto-light-webfont.woff') format('woff'),
+         url('roboto-light-webfont.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'robotoregular';
+    src: url('roboto-regular-webfont.eot');
+    src: url('roboto-regular-webfont.eot?#iefix') format('embedded-opentype'),
+         url('roboto-regular-webfont.woff') format('woff'),
+         url('roboto-regular-webfont.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'robotobold';
+    src: url('roboto-bold-webfont.eot');
+    src: url('roboto-bold-webfont.eot?#iefix') format('embedded-opentype'),
+         url('roboto-bold-webfont.woff') format('woff'),
+         url('roboto-bold-webfont.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'robotoblack';
+    src: url('roboto-black-webfont.eot');
+    src: url('roboto-black-webfont.eot?#iefix') format('embedded-opentype'),
+         url('roboto-black-webfont.woff') format('woff'),
+         url('roboto-black-webfont.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+// nastaveni adresare s obrazkami
+$image_dir: "";
+
+
+// Compass libraries
+@import "compass";
+
+// Compass reset
+@include global-reset;
+
+// Compass box sizing
+* {
+    @include box-sizing(border-box);
+    outline: 0 none;
+}
+body {
+    background-color: $white_color;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+img {
+    max-width: 100%;
+}
+img.float-left {
+    float: left;
+    margin: 0 20px 10px 0;
+}
+img.float-right {
+    float: right;
+    margin: 0 0 10px 20px;
+}
+a {
+    @include unstyled-link;
+    @include transition;
+    cursor: pointer;
+}
+em {
+    font-style: oblique;
+}
+u {
+    text-decoration: underline;
+}
+del {
+    text-decoration: line-through;
+}
+sup,
+sub {
+    font-size: smaller;
+    line-height: normal;
+}
+sup {
+    vertical-align: super;
+}
+sub {
+    vertical-align: sub;
+}
+button {
+    cursor: pointer;
+}
+input,
+textarea {
+    outline: 0 none;
+}
+textarea {
+    resize: none;
+}
+div.grid_info {
+    background-color: $white_color;
+    bottom: 0;
+    color: $black_color;
+    display: block;
+    left: 0;
+    padding: 15px;
+    position: fixed;
+    top: auto !important;
+    z-index: 99999;
+}

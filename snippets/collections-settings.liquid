@@ -1,0 +1,23 @@
+<div class="settings">
+    <div class="count">
+        {{ count_text }}
+    </div>
+{% comment %}
+<!--
+    <div class="view">
+        <div class="label">
+            View:
+        </div>
+        <div data-class="cols-4" class="cols-switch{% if products_per_row != 3 %} active{% endif %}">
+            <span></span><span></span><span></span><span></span>
+        </div>
+        <div data-class="cols-3" class="cols-switch{% if products_per_row == 3 %} active{% endif %}">
+            <span></span><span></span><span></span>
+        </div>
+    </div>
+-->
+{% endcomment %}
+    {% if settings.collections_sort_enable and display_sorting %}
+        {% include 'collection-sorting' %}
+    {% endif %}
+</div>

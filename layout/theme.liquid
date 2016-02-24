@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <title>{{ page_title }} | {{ shop.name }}</title>
+    <meta name="{{ page_description }}" content="">
+    <meta charset="utf-8">
+    <meta name="Author" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="robots" content="index, follow">
+    {% if template == 'index' %}
+    <style>
+        .homepage .bg {
+            background-image: url("{{ 'homepage_image_1920.jpg' | asset_url }}");
+        }
+        @media only screen and (max-width: 1600px) {
+            .homepage .bg {
+                background-image: url("{{ 'homepage_image_1600.jpg' | asset_url }}");
+            }
+        }
+        @media only screen and (max-width: 600px) {
+            .homepage .bg {
+                background-image: url("{{ 'homepage_image_600.jpg' | asset_url }}");
+            }
+        }
+        @media only screen and (max-width: 320px) {
+            .homepage .bg {
+                background-image: url("{{ 'homepage_image_320.jpg' | asset_url }}");
+            }
+        }
+    </style>
+    {% endif %}
+    <link rel="stylesheet" type="text/css" href="{{ 'screen.css' | asset_url }}" media="all">
+    <script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
+    <script>window.jQuery || document.write('<script src="{{ jquery-1.11.3.min.js | asset_url }}');</script>
+    {{ content_for_header }}
+</head>
+<body>
+    <header role="banner" aria-label="Heading">
+        <div class="header">
+            <div class="_cont">
+                <div class="shadow">
+                    <a href="/" class="logo" title="Home">{{ shop.name }}</a>
+                </div>
+
+                <div class="mobile-menu">
+                    {% assign search_term = search.terms | strip %}
+                    <form action="/search" method="get" id="find"{% if search_term != '' %} class="open"{% endif %}>
+                        <div>
+                            <input type="text" name="q" id="find-input" class="find-input" placeholder="Search..." value="{{ search.terms | escape }}">
+                            <button type="submit" title="Search" id="find-btn">Search</button>
+                        </div>
+                    </form>
+
+                    {{ 'Sign In' | customer_login_link }}
+
+                    <nav role="navigation" aria-label="Catalog">
+                        <ul>
+                            {% for link in linklists.catalog.links %}
+                                {% assign coll = link.object %}
+                                {% assign tags_count = coll.all_tags | size %}
+
+                                <li class="nc nav-li-category">
+                                    {% if tags_count > 0 %}
+                                        {% assign has_subcategories = ' data-subcategories="1"' %}
+                                    {% else %}
+                                        {% assign has_subcategories = '' %}
+                                    {% endif %}
+                                    <a href="{{ coll.url }}" class="nc nav-category"{{ has_subcategories }}>{{ coll.title }}</a>
+                                    <ul class="nc">
+                                        {% for tag in coll.all_tags %}
+                                        <li class="nc"><a href="{{ coll.url }}/{{ tag | handle }}" class="nc">{{ tag }}</a></li>
+                                        {% endfor %}
+                                    </ul>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </nav>
+                </div>
+
+                <span id="nav-icon"></span>
+            </div>
+        </div>
+
+        {% if template == 'page' or template == 'collection' or template == 'product' %}
+            {% include 'breadcrumb' %}
+        {% endif %}
+    </header>
+
+    {{ content_for_layout }}
+
+    <footer role="contentinfo" aria-label="Footer">
+        <div class="_cont">
+            {% include 'social-links' %}
+
+            <div class="top">
+                <div class="right">
+                    {% form 'customer' %}
+                        <div>
+                            <input type="hidden" id="contact_tags" name="contact[tags]" value="newsletter"/>
+                            <input type="text" id="contact_email" name="contact[email]" placeholder="Submit e-mail for special offers...">
+                            <button type="submit" title="Newsletter Signup">OK</button>
+                        </div>
+                    {% endform %}
+                </div>
+                <div class="left">
+                    <span class="phone">{{ shop.phone }}</span>
+                    <a class="mail" href="mailto:{{ shop.email }}">{{ shop.email }}</a>
+                </div>
+            </div>
+            <div class="bottom">
+                <div class="left">
+                    <nav role="navigation" aria-label="Service menu">
+                        <ul>
+                            {% for link in linklists.footer.links %}
+                            <li><a href="{{ link.url }}">{{ link.title }}</a></li>
+                            {% endfor %}
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    {% include 'sign-in' %}
+
+    <div class="grid_info"></div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/1.18.0/TweenMax.min.js"></script>
+    <script src="{{ 'jquery.validate.min.js' | asset_url }}" type="text/javascript"></script>
+    <script src="{{ 'scripts.min.js' | asset_url }}" type="text/javascript"></script>
+
+    <script>
+    jQuery(function() {
+      jQuery('.swatch :radio').change(function() {
+        var optionIndex = jQuery(this).closest('.swatch').attr('data-option-index');
+        var optionValue = jQuery(this).val();
+        jQuery("#AddToCartForm")
+          .find('.single-option-selector')
+          .eq(optionIndex)
+          .val(optionValue)
+          .trigger('change');
+      });
+    });
+    </script>
+<script>
+// (c) Copyright 2014 Caroline Schnapp. All Rights Reserved. Contact: mllegeorgesand@gmail.com
+// See http://docs.shopify.com/manual/configuration/store-customization/advanced-navigation/linked-product-options
+
+var Shopify = Shopify || {};
+
+Shopify.optionsMap = {};
+
+Shopify.updateOptionsInSelector = function(selectorIndex) {
+
+  switch (selectorIndex) {
+    case 0:
+      var key = 'root';
+      var selector = jQuery('.single-option-selector:eq(0)');
+      break;
+    case 1:
+      var key = jQuery('.single-option-selector:eq(0)').val();
+      var selector = jQuery('.single-option-selector:eq(1)');
+      break;
+    case 2:
+      var key = jQuery('.single-option-selector:eq(0)').val();
+      key += ' / ' + jQuery('.single-option-selector:eq(1)').val();
+      var selector = jQuery('.single-option-selector:eq(2)');
+  }
+
+  var initialValue = selector.val();
+  selector.empty();
+  var availableOptions = Shopify.optionsMap[key];
+  for (var i=0; i<availableOptions.length; i++) {
+    var option = availableOptions[i];
+    var newOption = jQuery('<option></option>').val(option).html(option);
+    selector.append(newOption);
+  }
+  jQuery('.swatch[data-option-index="' + selectorIndex + '"] .swatch-element').each(function() {
+    if (jQuery.inArray($(this).attr('data-value'), availableOptions) !== -1) {
+      $(this).removeClass('soldout').show().find(':radio').removeAttr('disabled','disabled')/*.removeAttr('checked')*/;
+    }
+    else {
+      $(this).addClass('soldout').hide().find(':radio').removeAttr('checked').attr('disabled','disabled');
+    }
+  });
+  if (jQuery.inArray(initialValue, availableOptions) !== -1) {
+    selector.val(initialValue);
+  }
+  selector.trigger('change');
+
+};
+
+Shopify.linkOptionSelectors = function(product) {
+  // Building our mapping object.
+  for (var i=0; i<product.variants.length; i++) {
+    var variant = product.variants[i];
+    if (variant.available) {
+      // Gathering values for the 1st drop-down.
+      Shopify.optionsMap['root'] = Shopify.optionsMap['root'] || [];
+      Shopify.optionsMap['root'].push(variant.option1);
+      Shopify.optionsMap['root'] = Shopify.uniq(Shopify.optionsMap['root']);
+      // Gathering values for the 2nd drop-down.
+      if (product.options.length > 1) {
+        var key = variant.option1;
+        Shopify.optionsMap[key] = Shopify.optionsMap[key] || [];
+        Shopify.optionsMap[key].push(variant.option2);
+        Shopify.optionsMap[key] = Shopify.uniq(Shopify.optionsMap[key]);
+      }
+      // Gathering values for the 3rd drop-down.
+      if (product.options.length === 3) {
+        var key = variant.option1 + ' / ' + variant.option2;
+        Shopify.optionsMap[key] = Shopify.optionsMap[key] || [];
+        Shopify.optionsMap[key].push(variant.option3);
+        Shopify.optionsMap[key] = Shopify.uniq(Shopify.optionsMap[key]);
+      }
+    }
+  }
+  // Update options right away.
+  Shopify.updateOptionsInSelector(0);
+  if (product.options.length > 1) Shopify.updateOptionsInSelector(1);
+  if (product.options.length === 3) Shopify.updateOptionsInSelector(2);
+  // When there is an update in the first dropdown.
+  jQuery(".single-option-selector:eq(0)").change(function() {
+    Shopify.updateOptionsInSelector(1);
+    if (product.options.length === 3) Shopify.updateOptionsInSelector(2);
+    return true;
+  });
+  // When there is an update in the second dropdown.
+  jQuery(".single-option-selector:eq(1)").change(function() {
+    if (product.options.length === 3) Shopify.updateOptionsInSelector(2);
+    return true;
+  });
+
+};
+</script>
+</body>
+</html>

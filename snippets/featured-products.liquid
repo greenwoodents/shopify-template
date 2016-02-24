@@ -1,0 +1,19 @@
+{% assign featured = 'Frontpage' %}
+{% assign products_per_page = 3 %}
+{% assign rows_per_page = 2 %}
+{% assign total_products = 9 %}
+
+<div class="collection-list featured cols-3" id="collection-list" data-products-per-page="{{ products_per_page }}">
+    {% assign i = 0 %}
+
+    {% for product in collections[featured].products limit: total_products %}
+        {% assign i = i | plus: 1 %}
+        {% include 'product-grid-item', i:i, products_per_page:products_per_page %}
+    {% endfor %}
+</div>
+
+{% if collections[featured].products.size > products_per_page %}
+    <div class="more-products" id="more-products-wrap">
+        <span id="more-products" data-rows_per_page="{{ rows_per_page }}">More products</span>
+    </div>
+{% endif %}

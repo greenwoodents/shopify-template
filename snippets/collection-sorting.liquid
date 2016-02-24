@@ -1,0 +1,82 @@
+<div class="sort">
+    {{ 'collections.sorting.title' | t }}:
+    <div class="sorter" id="sorter-1">
+        <div class="sorter-value" id="sorter-value">
+            {% assign current_sort = collection.sort_by | default: collection.default_sort_by %}
+            {% if 'manual' == current_sort %}
+                {{ 'collections.sorting.featured' | t }}
+            {% elsif 'best-selling' == current_sort %}
+                {{ 'collections.sorting.best_selling' | t }}
+            {% elsif 'title-ascending' == current_sort %}
+                {{ 'collections.sorting.az' | t }}
+            {% elsif 'title-descending' == current_sort %}
+                {{ 'collections.sorting.za' | t }}
+            {% elsif 'price-ascending' == current_sort %}
+                {{ 'collections.sorting.price_ascending' | t }}
+            {% elsif 'price-descending' == current_sort %}
+                {{ 'collections.sorting.price_descending' | t }}
+            {% elsif 'created-descending' == current_sort %}
+                {{ 'collections.sorting.date_descending' | t }}
+            {% elsif 'created-ascending' == current_sort %}
+                {{ 'collections.sorting.date_ascending' | t }}
+            {% endif %}
+
+        </div>
+        <div class="sorter-options" id="sorter-options">
+            <div data-value="manual" class="sorter-option{% if 'manual' == current_sort %} active{% endif %}">{{ 'collections.sorting.featured' | t }}</div>
+            <div data-value="best-selling" class="sorter-option{% if 'best-selling' == current_sort %} active{% endif %}">{{ 'collections.sorting.best_selling' | t }}</div>
+            <div data-value="title-ascending" class="sorter-option{% if 'title-ascending' == current_sort %} active{% endif %}">{{ 'collections.sorting.az' | t }}</div>
+            <div data-value="title-descending" class="sorter-option{% if 'title-descending' == current_sort %} active{% endif %}">{{ 'collections.sorting.za' | t }}</div>
+            <div data-value="price-ascending" class="sorter-option{% if 'price-ascending' == current_sort %} active{% endif %}">{{ 'collections.sorting.price_ascending' | t }}</div>
+            <div data-value="price-descending" class="sorter-option{% if 'price-descending' == current_sort %} active{% endif %}">{{ 'collections.sorting.price_descending' | t }}</div>
+            <div data-value="created-descending" class="sorter-option{% if 'created-descending' == current_sort %} active{% endif %}">{{ 'collections.sorting.date_descending' | t }}</div>
+            <div data-value="created-ascending" class="sorter-option{% if 'created-ascending' == current_sort %} active{% endif %}">{{ 'collections.sorting.date_ascending' | t }}</div>
+        </div>
+    </div>
+</div>
+
+<script>
+  /*============================================================================
+    Inline JS because collection liquid object is only available
+    on collection pages, and not external JS files
+  ==============================================================================*/
+  Shopify.queryParams = {};
+  if (location.search.length) {
+    for (var aKeyValue, i = 0, aCouples = location.search.substr(1).split('&'); i < aCouples.length; i++) {
+      aKeyValue = aCouples[i].split('=');
+      if (aKeyValue.length > 1) {
+        Shopify.queryParams[decodeURIComponent(aKeyValue[0])] = decodeURIComponent(aKeyValue[1]);
+      }
+    }
+  }
+
+    // ovladani volice poradi
+    var options = document.getElementsByClassName("sorter-option");
+
+    for (var i=0; i<options.length; i++) {
+        options[i].onclick = function(e) {
+            // zmena aktivni polozky v rozbalenych moznostech volice poradi
+            for (var j=0; j<options.length; j++) {
+                options[j].className = options[j].className.replace(/active/, '');
+            }
+
+            this.className += " active";
+
+            // zmena nazvu zvoleneho poradi
+            var sorter_value = document.getElementById("sorter-value");
+            sorter_value.innerHTML = this.innerHTML;
+
+            // zavreni volice poradi
+            var sorter = document.getElementById("sorter-1");
+            sorter.className = sorter.className.replace(/open/, '');
+
+            // Vynuceni zmeny poradi v Shopify
+            var value = this.getAttribute("data-value");
+            Shopify.queryParams.sort_by = value;
+
+            location.search = Object.keys(Shopify.queryParams).map(function(k) {
+                return encodeURIComponent(k) + '=' + encodeURIComponent(Shopify.queryParams[k])
+            }).join('&');
+        }
+    }
+</script>

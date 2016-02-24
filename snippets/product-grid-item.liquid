@@ -1,0 +1,59 @@
+{% unless grid_item_width %}
+  {% assign grid_item_width = 'large--one-third medium-down--one-half' %}
+{% endunless %}
+
+{% unless current_collection == blank %}
+  {% assign current_collection = collection %}
+{% endunless %}
+
+{% assign on_sale = false %}
+{% assign sale_text = 'products.product.sale' | t %}
+{% if product.compare_at_price > product.price %}
+  {% assign on_sale = true %}
+{% endif %}
+
+{% assign sold_out = true %}
+{% assign sold_out_text = 'products.product.sold_out' | t %}
+{% if product.available %}
+  {% assign sold_out = false %}
+{% endif %}
+
+{% if i > products_per_page %}
+    {% assign class_visible = " hidden" %}
+{% else %}
+    {% assign class_visible = "" %}
+{% endif %}
+
+<a href="{{ product.url | within: collection }}" class="product-box{{ class_visible }}">
+    <span class="img">
+        {% if product.images.size > 0 %}
+            {% assign image = product.images[0] %}
+            <span style="background-image: url('{{ image.src | img_url: 'grande' }}')" class="i{% if product.images.size > 1 %} first{% endif %}"></span>
+
+            {% if product.images.size > 1 %}
+                {% assign image = product.images[1] %}
+                <span class="i second" style="background-image: url('{{ image.src | img_url: 'grande' }}')"></span>
+            {% endif %}
+        {% endif %}
+    </span>
+    <span class="text">
+        <strong>{{ product.title }}</strong>
+        <span>
+          {% capture price %}{{ product.price | money }}{% endcapture %}
+          {% if product.price_varies %}{{ 'products.general.from_html' | t: price: price }}{% else %}{{ price }}{% endif %}
+
+          {% if product.compare_at_price > product.price %}
+              <span>
+                before {{ product.compare_at_price_max | money }}
+              </span>
+          {% endif %}
+        </span>
+        {% if product.available and product.variants.size > 1 %}
+            <div class="variants">
+                {% for option in product.options %}
+                    {% include 'product_variant' with option %}
+                {% endfor %}
+            </div>
+        {% endif %}
+    </span>
+</a>
